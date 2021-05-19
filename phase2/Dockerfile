@@ -8,7 +8,8 @@ EXPOSE 8081
 
 # Step 3: Use alpine package manager to install tini: 'apk add --update tini'
 #   (tini is a package that can be used as an entry point in a container)
-RUN apk add --update tini
+RUN apk add --update tini \
+    && mkdir -p /usr/src/app
 
 # Step 4: With a single command, create a new directory for app files at the
 #   path '/usr/src/app' and make that your current directory
