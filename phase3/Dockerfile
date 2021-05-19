@@ -2,18 +2,19 @@
 
 # Step 1: Base image for build stage - use official node image with alpine base
 #         Name it build-stage
-
+FROM node:16-alpine3.11 as build-stage
 # Step 2: Set the working directory to /app
-
+WORKDIR /app
 # Step 3: Copy in all the files needed to install dependencies
-
+COPY package*.json ./
 # Step 4: Install dependencies using npm
 #   To keep the image small, (force) clean the npm cache after
 #   Chain the commands to reduce the number of layers in the image
-
+RUN npm install \
+    && npm cache clean --force
 # Step 5: Copy in all the files from the current directory
-
-# Step 6: Build application 
+COPY . .
+# Step 6: Build application
 #   See the create-react-app documentation for more information on
 #   how to create a production build of your react app.
 #   (https://create-react-app.dev/docs/production-build)
@@ -27,12 +28,12 @@
 #   (Hint: This directory was also used in phase 1)
 
 # Step 9: Copy over the build files from build-stage
-#   The build directory was created inside the app directory in the 
+#   The build directory was created inside the app directory in the
 #   build-stage. The files inside that folder can be put directly into
 #   the html folder that you just set as your working directory
 
 # Step 10: Replace the default NGINX config with the application's version
-#    The absolute path to the default NGINX config file is 
+#    The absolute path to the default NGINX config file is
 #    /etc/nginx/conf.d/default.conf —replace it with the nginx.conf file
 #    provided in this folder
 
